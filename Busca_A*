@@ -104,7 +104,7 @@ mp.adicionaArco('Arad', 'Sibiu', 140)
 mp.adicionaArco('Arad', 'Timisoara', 118)
 mp.adicionaArco('Zerind', 'Oradea', 71)
 mp.adicionaArco('Oradea', 'Sibiu', 151)
-mp.adicionaArco('Sibiu', 'Giurgiu', 99)
+mp.adicionaArco('Sibiu', 'Craiova', 99)
 mp.adicionaArco('Sibiu', 'Rimnicu', 80)
 mp.adicionaArco('Sibiu', 'Craiova', 146)
 mp.adicionaArco('Timisoara', 'Lugoj', 111)
@@ -116,7 +116,7 @@ mp.adicionaArco('Rimnicu', 'Pitesti', 97)
 mp.adicionaArco('Rimnicu', 'Craiova', 146)
 mp.adicionaArco('Pitesti', 'Bucharest', 101)
 mp.adicionaArco('Fagaras', 'Pitesti', 138)
-mp.adicionaArco('Bucharest', 'Craiova', 211)
+mp.adicionaArco('Bucharest', 'Giurgiu', 211)
 
 # Define a origem e o destino para a busca A*.
 origem = 'Arad'
