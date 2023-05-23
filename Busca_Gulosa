@@ -1,0 +1,133 @@
+# Bibliotecas
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Define classe Vertice.
+class Vertice:
+    def __init__(self, rotulo, distancia_objetivo):
+        self.rotulo = rotulo
+        self.visitado = False
+        self.adjacentes = []
+        self.distancia_objetivo = distancia_objetivo
+   # Adiciona um objeto Adjacente à lista de adjacentes do vértice.
+    def adiciona_Adj(self, adjacente):
+        self.adjacentes.append(adjacente)
+
+# Define classe Adjacente.
+class Adjacente:
+    def __init__(self, vertice, custo):
+        self.vertice = vertice
+        self.custo = custo
+
+# O objeto grafo é criado como um objeto da classe nx.Graph(), que representa o grafo da Romênia.
+grafo = nx.Graph()
+
+arad = Vertice('Arad', 366)
+zerind = Vertice('Zerind', 374)
+oradea = Vertice('Oradea', 380)
+sibiu = Vertice('Sibiu', 253)
+timisoara = Vertice('Timisoara', 329)
+lugoj = Vertice('Lugoj', 244)
+mehadia = Vertice('Mehadia', 241)
+dobreta = Vertice('Dobreta', 242)
+craiova = Vertice('Craiova', 160)
+rimnicu = Vertice('Rimnicu', 193)
+fagaras = Vertice('Fagaras', 178)
+pitesti = Vertice('Pitesti', 98)
+bucharest = Vertice('Bucharest', 0)
+giurgiu = Vertice('Giurgiu', 77)
+
+# Os vértices são conectados uns aos outros através do método adiciona_Adj, que adiciona objetos Adjacente.
+arad.adiciona_Adj(Adjacente(zerind, 75))
+arad.adiciona_Adj(Adjacente(sibiu, 140))
+arad.adiciona_Adj(Adjacente(timisoara, 118))
+
+zerind.adiciona_Adj(Adjacente(arad, 75))
+zerind.adiciona_Adj(Adjacente(oradea, 71))
+
+oradea.adiciona_Adj(Adjacente(zerind, 71))
+oradea.adiciona_Adj(Adjacente(sibiu, 151))
+
+sibiu.adiciona_Adj(Adjacente(oradea, 151))
+sibiu.adiciona_Adj(Adjacente(arad, 140))
+sibiu.adiciona_Adj(Adjacente(fagaras, 99))
+sibiu.adiciona_Adj(Adjacente(rimnicu, 80))
+
+timisoara.adiciona_Adj(Adjacente(arad, 118))
+timisoara.adiciona_Adj(Adjacente(lugoj, 111))
+
+lugoj.adiciona_Adj(Adjacente(timisoara, 111))
+lugoj.adiciona_Adj(Adjacente(mehadia, 70))
+
+mehadia.adiciona_Adj(Adjacente(lugoj, 70))
+mehadia.adiciona_Adj(Adjacente(dobreta, 75))
+
+dobreta.adiciona_Adj(Adjacente(mehadia, 75))
+dobreta.adiciona_Adj(Adjacente(craiova, 120))
+
+craiova.adiciona_Adj(Adjacente(dobreta, 120))
+craiova.adiciona_Adj(Adjacente(pitesti, 138))
+craiova.adiciona_Adj(Adjacente(rimnicu, 146))
+
+rimnicu.adiciona_Adj(Adjacente(craiova, 146))
+rimnicu.adiciona_Adj(Adjacente(craiova, 146))
+rimnicu.adiciona_Adj(Adjacente(sibiu, 80))
+rimnicu.adiciona_Adj(Adjacente(pitesti, 97))
+
+fagaras.adiciona_Adj(Adjacente(sibiu, 99))
+fagaras.adiciona_Adj(Adjacente(bucharest, 211))
+
+pitesti.adiciona_Adj(Adjacente(rimnicu, 97))
+pitesti.adiciona_Adj(Adjacente(craiova, 138))
+pitesti.adiciona_Adj(Adjacente(bucharest, 101))
+
+bucharest.adiciona_Adj(Adjacente(fagaras, 211))
+bucharest.adiciona_Adj(Adjacente(pitesti, 101))
+bucharest.adiciona_Adj(Adjacente(giurgiu, 90))
+
+# Adicionando vértices e arestas ao grafo
+grafo.add_edge(arad.rotulo, zerind.rotulo, weight=75)
+grafo.add_edge(arad.rotulo, sibiu.rotulo, weight=140)
+grafo.add_edge(arad.rotulo, timisoara.rotulo, weight=118)
+grafo.add_edge(zerind.rotulo, oradea.rotulo, weight=71)
+grafo.add_edge(sibiu.rotulo, oradea.rotulo, weight=151)
+grafo.add_edge(sibiu.rotulo, fagaras.rotulo, weight=99)
+grafo.add_edge(sibiu.rotulo, rimnicu.rotulo, weight=80)
+grafo.add_edge(timisoara.rotulo, lugoj.rotulo, weight=111)
+grafo.add_edge(lugoj.rotulo, mehadia.rotulo, weight=70)
+grafo.add_edge(mehadia.rotulo, dobreta.rotulo, weight=75)
+grafo.add_edge(dobreta.rotulo, craiova.rotulo, weight=120)
+grafo.add_edge(rimnicu.rotulo, craiova.rotulo, weight=146)
+grafo.add_edge(rimnicu.rotulo, pitesti.rotulo, weight=97)
+grafo.add_edge(fagaras.rotulo, bucharest.rotulo, weight=211)
+grafo.add_edge(pitesti.rotulo, bucharest.rotulo, weight=101)
+grafo.add_edge(bucharest.rotulo, giurgiu.rotulo, weight=90)
+
+# Definindo a posição dos vértices no layout
+pos = nx.spring_layout(grafo)
+
+# Definindo as cores dos nós e das arestas
+node_colors = ['lightblue'] * len(grafo.nodes)
+edge_colors = ['black'] * len(grafo.edges)
+
+# Definindo a cor vermelha para as arestas do caminho
+for i in range(len(caminho) - 1):
+    arco = (caminho[i], caminho[i+1])
+    edge_colors[list(grafo.edges).index(arco)] = 'red'
+
+# Desenhando os nós
+nx.draw_networkx_nodes(grafo, pos, node_color=node_colors, node_size=300)
+
+# Desenhando as arestas
+nx.draw_networkx_edges(grafo, pos, edge_color=edge_colors, width=2.0, alpha=0.8)
+
+# Adicionando os rótulos aos nós
+labels = {}
+for cidade in grafo.nodes:
+    labels[cidade] = cidade
+
+nx.draw_networkx_labels(grafo, pos, labels, font_size=8)
+
+plt.title('Mapa da Romênia')
+plt.axis('off')
+plt.show()
