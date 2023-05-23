@@ -1,0 +1,164 @@
+# Bibliotecas
+from queue import PriorityQueue
+import matplotlib.pyplot as plt
+import networkx as nx
+
+# Define a classe
+class Mapa:
+    # O método __init__
+    def __init__(self):
+        self.listaVertices = []
+        self.listaAdjacencias = {}
+    # Método que adiciona um vértice ao mapa.
+    def adicionaVertice(self, rotulo):
+        vertice = Vertice(rotulo)
+        self.listaVertices.append(vertice)
+        self.listaAdjacencias[vertice] = {}
+    # Método que adiciona uma aresta (arco) entre dois vértices no mapa. 
+    def adicionaArco(self, origem, destino, distancia):
+        for vertice in self.listaVertices:
+            if vertice.rotulo == origem:
+                origem = vertice
+            if vertice.rotulo == destino:
+                destino = vertice
+        self.listaAdjacencias[origem][destino] = distancia
+        self.listaAdjacencias[destino][origem] = distancia
+    # Método que localiza um vértice pelo rótulo.   
+    def localizaVertice(self, rotulo):
+        for vertice in self.listaVertices:
+            if vertice.rotulo == rotulo:
+                return vertice
+        return None
+
+    # Método que realiza a busca A* no mapa.
+    def buscaAStar(self, origem, destino):
+        origem = self.localizaVertice(origem)
+        destino = self.localizaVertice(destino)
+        if origem is None or destino is None:
+            return None
+
+        custoG = {}
+        custoH = {}
+
+        custoG[origem] = 0
+        custoH[origem] = origem.heuristica(destino)
+
+        visitados = set()
+        fronteira = PriorityQueue()
+        fronteira.put((custoG[origem] + custoH[origem], origem))
+
+        while not fronteira.empty():
+            _, atual = fronteira.get()
+
+            if atual == destino:
+                caminho = []
+                while atual is not None:
+                    caminho.append(atual.rotulo)
+                    atual = atual.pai
+                return caminho[::-1]
+
+            visitados.add(atual)
+
+            vizinhos = self.listaAdjacencias[atual]
+            for vizinho in vizinhos:
+                custo = custoG[atual] + self.listaAdjacencias[atual][vizinho]
+                if vizinho not in custoG or custo < custoG[vizinho]:
+                    custoG[vizinho] = custo
+                    custoH[vizinho] = vizinho.heuristica(destino)
+                    vizinho.pai = atual
+                    if vizinho not in visitados:
+                        fronteira.put((custoG[vizinho] + custoH[vizinho], vizinho))
+
+        return None
+
+# Define a classe Vertice
+class Vertice:
+    def __init__(self, rotulo):
+        self.rotulo = rotulo
+        self.pai = None
+    # Define uma heurística simples para o vértice
+    def heuristica(self, destino):
+        # Define uma heurística simples que retorna 1 para todos os vértices
+        return 1
+
+# Cria uma instância da classe Mapa chamada mp.
+mp = Mapa()
+
+mp.adicionaVertice('Arad')
+mp.adicionaVertice('Zerind')
+mp.adicionaVertice('Oradea')
+mp.adicionaVertice('Sibiu')
+mp.adicionaVertice('Timisoara')
+mp.adicionaVertice('Lugoj')
+mp.adicionaVertice('Mehadia')
+mp.adicionaVertice('Dobreta')
+mp.adicionaVertice('Craiova')
+mp.adicionaVertice('Rimnicu')
+mp.adicionaVertice('Fagaras')
+mp.adicionaVertice('Pitesti')
+mp.adicionaVertice('Bucharest')
+mp.adicionaVertice('Giurgiu')
+
+mp.adicionaArco('Arad', 'Zerind', 75)
+mp.adicionaArco('Arad', 'Sibiu', 140)
+mp.adicionaArco('Arad', 'Timisoara', 118)
+mp.adicionaArco('Zerind', 'Oradea', 71)
+mp.adicionaArco('Oradea', 'Sibiu', 151)
+mp.adicionaArco('Sibiu', 'Giurgiu', 99)
+mp.adicionaArco('Sibiu', 'Rimnicu', 80)
+mp.adicionaArco('Sibiu', 'Craiova', 146)
+mp.adicionaArco('Timisoara', 'Lugoj', 111)
+mp.adicionaArco('Lugoj', 'Mehadia', 70)
+mp.adicionaArco('Mehadia', 'Dobreta', 75)
+mp.adicionaArco('Dobreta', 'Craiova', 120)
+mp.adicionaArco('Fagaras', 'Rimnicu', 146)
+mp.adicionaArco('Rimnicu', 'Pitesti', 97)
+mp.adicionaArco('Rimnicu', 'Craiova', 146)
+mp.adicionaArco('Pitesti', 'Bucharest', 101)
+mp.adicionaArco('Fagaras', 'Pitesti', 138)
+mp.adicionaArco('Bucharest', 'Craiova', 211)
+
+# Define a origem e o destino para a busca A*.
+origem = 'Arad'
+destino = 'Bucharest'
+
+# Realiza a busca A* no mapa, utilizando a origem e o destino fornecidos, e armazena o resultado no objeto caminho.
+caminho = mp.buscaAStar(origem, destino)
+
+if caminho is not None:
+    print(f"Caminho de {origem} para {destino}:")
+    # Imprime o caminho encontrado
+    print(" -> ".join(caminho))
+else:
+    print("Não há caminho possível entre a origem e o destino.")
+
+
+# Plota o Grafo
+G = nx.Graph()
+
+# Percorre a lista de adjacências do objeto mp.
+for vertice in mp.listaVertices:
+    G.add_node(vertice.rotulo)
+
+# Percorre os destinos de cada origem na lista de adjacências.
+for origem in mp.listaAdjacencias:
+    for destino in mp.listaAdjacencias[origem]:
+        distancia = mp.listaAdjacencias[origem][destino]
+        G.add_edge(origem.rotulo, destino.rotulo, weight=distancia)
+
+# Adjust the layout algorithm and spacing factor
+pos = nx.spring_layout(G, k=1.5)
+
+nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')  # Draw nodes
+nx.draw_networkx_edges(G, pos)  # Draw edges
+nx.draw_networkx_labels(G, pos, font_size=10, font_color='black')  # Draw labels
+
+# Verifica se existe um caminho válido entre a origem e o destino.
+if caminho is not None:
+   # Cria uma lista de arestas que fazem parte do caminho, utilizando a função zip para combinar os elementos do caminh
+    path_edges = list(zip(caminho, caminho[1:]))
+    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2.0)  # Draw path edges
+
+plt.axis('off')  # Disable the axis
+plt.title('Mapa')  # Set the graph title
+plt.show()
