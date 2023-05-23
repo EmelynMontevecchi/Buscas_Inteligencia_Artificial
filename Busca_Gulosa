@@ -112,6 +112,8 @@ node_colors = ['lightblue'] * len(grafo.nodes)
 edge_colors = ['black'] * len(grafo.edges)
 
 # Definindo a cor vermelha para as arestas do caminho
+caminho = ['Arad', 'Sibiu', 'Rimnicu', 'Pitesti', 'Bucharest']
+
 for i in range(len(caminho) - 1):
     arco = (caminho[i], caminho[i+1])
     edge_colors[list(grafo.edges).index(arco)] = 'red'
