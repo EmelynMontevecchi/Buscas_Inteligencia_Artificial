@@ -6,7 +6,7 @@ Algoritmo de busca em largura Simples, Gulosa e A* para determinar o melhor cami
 ![image](https://github.com/EmelynMontevecchi/Buscas_Inteligencia_Artificial/assets/99364162/990a0a37-b1f6-4fdf-a850-8d1af75bfdd1)
 
 ## Busca Gulosa
-![image](https://github.com/EmelynMontevecchi/Buscas_Inteligencia_Artificial/assets/99364162/2d6fbe1e-78c8-406c-8cd4-3ab2f196eb69)
+![image](https://github.com/EmelynMontevecchi/Buscas_Inteligencia_Artificial/assets/99364162/584723d5-b3dd-4637-abca-9983f738e93f)
 
 ## Busca A*
-![image](https://github.com/EmelynMontevecchi/Buscas_Inteligencia_Artificial/assets/99364162/d52e2c62-f669-480e-ba9d-dba9e8146c4f)
+![image](https://github.com/EmelynMontevecchi/Buscas_Inteligencia_Artificial/assets/99364162/6220cbdb-daf8-45de-bd70-9949e05dcb12)
