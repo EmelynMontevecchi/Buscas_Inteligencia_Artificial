@@ -3,16 +3,17 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # Define classe Vertice.
+# Define classe Vertice.
 class Vertice:
-    def __init__(self, rotulo, distancia_objetivo):
+    def __init__(self, rotulo, heuristica):
         self.rotulo = rotulo
         self.visitado = False
         self.adjacentes = []
-        self.distancia_objetivo = distancia_objetivo
+        self.heuristica = heuristica
    # Adiciona um objeto Adjacente à lista de adjacentes do vértice.
     def adiciona_Adj(self, adjacente):
         self.adjacentes.append(adjacente)
-
+        self.adjacentes.sort(key=lambda x: x.vertice.heuristica)
 # Define classe Adjacente.
 class Adjacente:
     def __init__(self, vertice, custo):
